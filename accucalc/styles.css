@@ -1,0 +1,26 @@
+div.calculator {
+    background-color: #ffb0f2;
+    padding: 20px;
+    width : 800px;
+    border: 10px solid black;
+    margin: 30px auto;
+    text-align: center;
+}
+
+div.calculator h1{
+    font-family: Arial, Helvetica, sans-serif;
+    color: magenta;
+    font-size: 60px;
+}
+
+div.calculator p{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: black;
+    font-size: 40px;
+}
+
+div.calculator label{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: black;
+    font-size: 35px;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>osu!accuracy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calculator">
+        <h1>osu!accuracy calculator</h1>
+        <label for="perfect" style="color:skyblue;">300:</label>
+        <input id="perfect" type="number" placeholder="Enter 300s">
+        <label for="good" style="color:chartreuse;">100:</label>
+        <input id="good" type="number" placeholder="Enter 100s"><br>
+        <label for="bad" style="color:#ff7f00;">50:</label>
+        <input id="bad" type="number" placeholder="Enter 50s">
+        <label for="miss" style="color:red;">X:</label>
+        <input id="miss" type="number" placeholder="Enter misses"><br>
+        <p id="result">Accuracy: </p>
+        <p>Rank: <span id="rank"></span></p>
+    </div>
+
+    <script>
+        function calculate() {
+            const perfect = parseFloat(document.getElementById("perfect").value) || 0;
+            const good = parseFloat(document.getElementById("good").value) || 0;
+            const bad = parseFloat(document.getElementById("bad").value) || 0;
+            const miss = parseFloat(document.getElementById("miss").value) || 0;
+
+            const totalHits = perfect + good + bad + miss;
+            let accuracy;
+
+            if (totalHits > 0) {
+                accuracy = (((300 * perfect) + (100 * good) + (50 * bad)) / (300 * totalHits)) * 100;
+                accuracy = accuracy.toFixed(2); // Format to 2 decimal places
+            } else {
+                accuracy = "Enter valid numbers!";
+            }
+
+            if (accuracy < 0 || accuracy > 100 || perfect < 0 || good < 0 || bad < 0 || miss < 0) {
+                accuracy = "Enter valid numbers!";
+            }   
+
+            document.getElementById("result").innerText = `Accuracy: ${accuracy}%`;
+
+            // Update rank dynamically
+            updateRank(accuracy, perfect, bad, miss, totalHits);
+        }
+
+            function updateRank(accuracy, perfect, bad, miss, totalHits) {
+            const rankElement = document.getElementById("rank");
+
+            if (totalHits == 0 || accuracy === "Enter valid numbers!") {
+                rankElement.innerText = "N/A";
+                rankElement.style.color = "black"; // Default color for invalid input
+                return;
+            }
+
+            const perfectPercentage = (perfect / totalHits) * 100;
+            const badPercentage = (bad / totalHits) * 100;
+
+            let rank, color;
+            if (accuracy == 100) {
+                rank = "SS";
+                color = "gold"; // Example: Gold for "SS" rank
+            } else if (perfectPercentage >= 90 && badPercentage <= 1 && miss === 0) {
+                rank = "S";
+                color = "orange"; // Example: Green for "S" rank
+            } else if (perfectPercentage >= 80 && miss == 0 || perfectPercentage >= 90) {
+                rank = "A";
+                color = "green"; // Example: Blue for "A" rank
+            } else if (perfectPercentage >= 70 && miss == 0 || perfectPercentage >= 80) {
+                rank = "B";
+                color = "blue"; // Example: Purple for "B" rank
+            } else if (perfectPercentage >= 60) {
+                rank = "C";
+                color = "purple"; // Example: Orange for "C" rank
+            } else {
+                rank = "D";
+                color = "red"; // Example: Red for "D" rank
+            }
+
+            rankElement.innerText = `${rank}`;
+            rankElement.style.color = color; // Set the text color based on the rank
+
+            document.getElementById("rank").innerText = `${rank}`;
+        }
+
+        // Add event listeners to dynamically update accuracy and rank
+        document.getElementById("perfect").addEventListener("input", calculate);
+        document.getElementById("good").addEventListener("input", calculate);
+        document.getElementById("bad").addEventListener("input", calculate);
+        document.getElementById("miss").addEventListener("input", calculate);
+    </script>
+</body>
+</html>
